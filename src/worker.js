@@ -10,12 +10,10 @@ const port = 8080;
 app.listen(port, () => console.log(`Worker started [${process.pid}] listening on http://localhost:${port}`));
 
 app.use((req, res, next) => {
-	console.log(`I: ${process.pid} got a request`);
 	requestCounter++;
-	if (requestCounter > 5) {
+	if (requestCounter > 15) {
 		cluster.worker.send("REQ[Fork]"); // Request a new fork
 		console.log(`I: Worker's [${process.pid}] requests per minute = ${requestCounter}`);
-		if (requestCounter > 10) console.warn(`W: Worker's [${process.pid}] requests per minute = ${requestCounter}!!!`);
 	}
 	next();
 });

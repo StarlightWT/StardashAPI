@@ -11,6 +11,8 @@ function _fork(count) {
 	}
 }
 
+cluster.schedulingPolicy = cluster.SCHED_RR;
+
 cluster.setupPrimary({
 	exec: "./src/worker.js",
 	args: ["--use", "https"],
