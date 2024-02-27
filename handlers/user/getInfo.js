@@ -1,11 +1,11 @@
 module.exports = (req, res) => {
-	const { lockId } = req.params;
-	const authToken = req.headers["authorized"];
+	const { id } = req.params;
 
-	// if (!authToken)
-	// 	return res.status(400).send({
-	// 		message: "Missing authentication token!",
-	// 	});
-
+	if (!id) {
+		return res.status(400).send({
+			message: "Missing user ID",
+		});
+	}
+	// TODO get data from DB and return the data
 	res.status(200).send({ message: `Good job! ${process.pid}` });
 };
