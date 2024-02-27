@@ -24,7 +24,7 @@ cluster.setupPrimary({
 _fork(maxWorkers / 2);
 
 cluster.on("exit", (worker, code, signal) => {
-	console.warn(`W: Worker died [${worker.process.pid}]`);
+	console.warn(`W:[PR] Worker died [${worker.process.pid}]`);
 	if (Object.values(cluster.workers).length < 1) {
 		// Always keep at least 1 process running
 		_fork(1);
@@ -37,10 +37,9 @@ cluster.on("message", () => {
 
 // Run DB connection test
 db.testConnection().then((passed) => {
-	console.log(passed);
 	if (passed) {
-		console.log("[PR] Database connection passed!");
+		console.log("I:[PR] Database connection passed!");
 	} else {
-		console.error("[PR] Database connection test failed!");
+		console.error("E:[PR] Database connection test failed!");
 	}
 });
