@@ -39,7 +39,7 @@ cluster.on("message", () => {
 // Run DB connection test
 db.testConnection().then((passed) => {
 	if (passed) {
-		console.log("I:[PR] Database connection passed!");
+		console.log("I:[PR] Database test connection passed!");
 	} else {
 		console.error("E:[PR] Database connection test failed!");
 	}
