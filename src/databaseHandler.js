@@ -23,6 +23,20 @@ async function testConnection() {
 	}
 }
 
+async function getUser(id) {
+	let conn;
+	try {
+		conn = await pool.getConnection();
+		return await conn.query(`SELECT * FROM users WHERE id='${id}'`);
+	} catch (e) {
+		console.error(e);
+		return 1;
+	} finally {
+		if (conn) await conn.end();
+	}
+}
+
 module.exports = {
 	testConnection,
+	getUser,
 };
