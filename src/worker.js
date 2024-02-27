@@ -9,6 +9,8 @@ const port = process.env.API_PORT;
 
 app.listen(port, () => console.log(`I:[${process.pid}] listening on http://localhost:${port}`));
 
+app.use(express.json());
+
 app.use((req, res, next) => {
 	requestCounter++;
 	if (requestCounter > 15) {
