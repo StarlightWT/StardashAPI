@@ -5,7 +5,7 @@ let requestCounter = 0;
 
 const express = require("express");
 const app = express();
-const port = 8080;
+const port = process.env.API_PORT;
 
 app.listen(port, () => console.log(`Worker started [${process.pid}] listening on http://localhost:${port}`));
 

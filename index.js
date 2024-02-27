@@ -1,6 +1,8 @@
 const cluster = require("cluster");
 const os = require("os");
 
+const db = require("./src/databaseHandler");
+
 var maxWorkers = os.cpus().length; // Get how many cores the system has to not try and make too many workers
 
 function _fork(count) {
@@ -31,4 +33,14 @@ cluster.on("exit", (worker, code, signal) => {
 
 cluster.on("message", () => {
 	_fork(1);
+});
+
+// Run DB connection test
+db.testConnection().then((passed) => {
+	console.log(passed);
+	if (passed) {
+		console.log("[PR] Database connection passed!");
+	} else {
+		console.error("[PR] Database connection test failed!");
+	}
 });
