@@ -30,7 +30,7 @@ async function getUser(id) {
 	let conn;
 	try {
 		conn = await pool.getConnection();
-		let user = await conn.query(`SELECT * FROM users WHERE id='${id}'`);
+		let user = await conn.query(`SELECT id, username, email FROM users WHERE id='${id}'`);
 		if (!user[0]?.id) return null;
 		return user[0];
 	} catch (e) {
