@@ -85,11 +85,37 @@ async function getSession(token) {
 	try {
 		conn = await pool.getConnection();
 		let session = await conn.query(`SELECT * FROM accessTokens WHERE accessToken='${token}'`);
-		if (!session.accessToken) return null;
-		return session;
+		if (!session[0]?.accessToken) return null;
+		return session[0];
 	} catch (e) {
 		console.error(e);
 		return 1;
+	} finally {
+		if (conn) await conn.end();
+	}
+}
+
+// 1 - Not an object!
+// 2 - Unable to get duration limits
+// 3 - Invalid accessToken
+async function startLock(lock, accessToken) {
+	let conn;
+	try {
+		if (typeof lock != "object") return 1;
+		if (!lock.minDuration || !lock.maxDuration) return 2;
+
+		// Get lockee from access Token
+		let lockeeId = await getSession(accessToken);
+		if (!lockeeId) return 3;
+		lockeeId = lockeeId.userId; //Get the userId from session
+
+		const createdAt = new Date().getTime();
+		const endsAt = Math.round((lock.maxDuration - lock.minDuration) / (Math.random() + Math.random() * 50 + 1));
+		console.log(endsAt);
+		console.log(Math.random() + Math.random() * 50 + 1);
+		// conn.query(`INSERT INTO locks (id, createdAt, endsAt, mustEndAt, timerVisible, status, lockeeId, keyholderId) VALUES ()`);
+	} catch (e) {
+		console.error(e);
 	} finally {
 		if (conn) await conn.end();
 	}
@@ -99,6 +125,7 @@ module.exports = {
 	testConnection,
 	getUser,
 	createUser,
+	startLock,
 };
 
 async function ensureUniqueId(id) {
