@@ -72,6 +72,11 @@ async function getLock(id) {
 		conn = await pool.getConnection();
 		let lock = await conn.query(`SELECT * FROM locks WHERE id='${id}'`);
 		if (!lock[0]?.id) return null;
+		lock[0].createdAt = lock[0].createdAt.toString();
+		lock[0].endsAt = lock[0].endsAt.toString();
+		if (lock[0].mustEndAt) lock[0].mustEndAt = lock[0].mustEndAt.toString();
+		if (lock[0].frozenAt) lock[0].frozenAt = lock[0].frozenAt.toString();
+
 		return lock[0];
 	} catch (e) {
 		console.error(e);
@@ -179,6 +184,7 @@ async function startLock(lock, accessToken) {
 module.exports = {
 	testConnection,
 	getUser,
+	getLock,
 	createUser,
 	startLock,
 	loginUser,

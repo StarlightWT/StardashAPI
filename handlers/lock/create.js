@@ -1,12 +1,10 @@
 const { startLock } = require("../../src/databaseHandler");
 
 /*
-	{
-		"minDuration":"ms"
-		"maxDuration":"ms"
-		"mustEndAt": "timestamp"
-		"timerVisible": "bool"
-	}
+	!"minDuration":"ms"
+	!"maxDuration":"ms"
+	?"mustEndAt": "timestamp"
+	?"timerVisible": "bool"
 */
 module.exports = (req, res) => {
 	const authToken = req.headers["authorization"];
