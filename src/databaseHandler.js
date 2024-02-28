@@ -76,7 +76,7 @@ async function getLock(id) {
 		lock[0].endsAt = lock[0].endsAt.toString();
 		if (lock[0].mustEndAt) lock[0].mustEndAt = lock[0].mustEndAt.toString();
 		if (lock[0].frozenAt) lock[0].frozenAt = lock[0].frozenAt.toString();
-
+		lock[0].timerVisible ? (lock[0].timerVisible = true) : (lock[0].timerVisible = false);
 		return lock[0];
 	} catch (e) {
 		console.error(e);
@@ -170,8 +170,11 @@ async function startLock(lock, accessToken) {
 		let response = await conn.query(`INSERT INTO locks (id, createdAt, endsAt, mustEndAt, timerVisible, status, lockeeId) VALUES ('${id}', ${createdAt}, ${endsAt}, ${mustEndAt}, ${timerVisible}, '${status}', '${lockeeId}') RETURNING *`);
 		response[0].createdAt = response[0].createdAt.toString();
 		response[0].endsAt = response[0].endsAt.toString();
+
 		if (response[0].mustEndAt) response[0].mustEndAt = response[0].mustEndAt.toString();
 		if (response[0].frozenAt) response[0].frozenAt = response[0].frozenAt.toString();
+
+		response[0].timerVisible ? (response[0].timerVisible = true) : (response[0].timerVisible = false);
 
 		return response[0];
 	} catch (e) {
