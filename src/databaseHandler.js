@@ -41,6 +41,31 @@ async function getUser(id) {
 	}
 }
 
+// 1 - Invalid username or email
+// 2 - Invalid password
+async function loginUser(username, email, password) {
+	let conn;
+	try {
+		conn = await pool.getConnection();
+		let userQuery = await conn.query(`SELECT id, passHash FROM users WHERE username='${username}' OR email='${email}'`);
+		const user = userQuery[0];
+
+		if (!user) return 1;
+
+		let validPassword = await argon2.verify(user.passHash, password);
+
+		if (!validPassword) return 2;
+
+		let session = await conn.query(`SELECT accessToken FROM accessTokens WHERE userId='${user.id}'`);
+
+		return session[0];
+	} catch (e) {
+		console.error(e);
+	} finally {
+		if (conn) await conn.end();
+	}
+}
+
 async function getLock(id) {
 	let conn;
 	try {
@@ -156,6 +181,7 @@ module.exports = {
 	getUser,
 	createUser,
 	startLock,
+	loginUser,
 };
 
 async function ensureUniqueId(id) {
