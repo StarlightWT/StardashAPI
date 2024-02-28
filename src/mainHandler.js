@@ -8,6 +8,7 @@ const getLock = require("../handlers/lock/getInfo");
 const getUser = require("../handlers/user/getInfo");
 const createUser = require("../handlers/user/create");
 const loginUser = require("../handlers/user/login");
+const toggleTimer = require("../handlers/lock/toggleTimer");
 
 module.exports = (app) => {
 	// Get requests
@@ -15,6 +16,7 @@ module.exports = (app) => {
 	app.get("/v1/users/:id", (req, res) => getUser(req, res));
 	// Post requests
 	app.post("/v1/locks/create", (req, res) => createLock(req, res));
+	app.post("/v1/locks/:id/timer_visibility", (req, res) => toggleTimer(req, res));
 	app.post("/v1/users/create", (req, res) => createUser(req, res));
 	app.post("/v1/users/login", (req, res) => loginUser(req, res));
 	// Patch requests

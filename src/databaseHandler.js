@@ -184,6 +184,27 @@ async function startLock(lock, accessToken) {
 	}
 }
 
+// 1 - Lock not found
+// 2 - Not authorized
+async function toggleLockTimer(lockId, newState, accessToken) {
+	let conn;
+	try {
+		const lock = await getLock(lockId);
+		if (!lock) return 1;
+
+		if (lock.keyholderId && lock.keyholderId != accessToken) return 2;
+		if (!lock.keyholderId) return 2; // In the future allow extensions to modify
+
+		conn = await pool.getConnection();
+
+		let response = await conn.query(`UPDATE `);
+	} catch (e) {
+		console.error(e);
+	} finally {
+		if (conn) await conn.end();
+	}
+}
+
 module.exports = {
 	testConnection,
 	getUser,
@@ -191,6 +212,7 @@ module.exports = {
 	createUser,
 	startLock,
 	loginUser,
+	toggleLockTimer,
 };
 
 async function ensureUniqueId(id) {
