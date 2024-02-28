@@ -41,6 +41,21 @@ async function getUser(id) {
 	}
 }
 
+async function getLock(id) {
+	let conn;
+	try {
+		conn = await pool.getConnection();
+		let lock = await conn.query(`SELECT * FROM locks WHERE id='${id}'`);
+		if (!lock[0]?.id) return null;
+		return lock[0];
+	} catch (e) {
+		console.error(e);
+		return 1;
+	} finally {
+		if (conn) await conn.end();
+	}
+}
+
 // 1 - Fatal error
 // 2 - Username taken
 // 3 - Email taken
@@ -109,11 +124,26 @@ async function startLock(lock, accessToken) {
 		if (!lockeeId) return 3;
 		lockeeId = lockeeId.userId; //Get the userId from session
 
-		const createdAt = new Date().getTime();
-		const endsAt = Math.round((lock.maxDuration - lock.minDuration) / (Math.random() + Math.random() * 50 + 1));
-		console.log(endsAt);
-		console.log(Math.random() + Math.random() * 50 + 1);
-		// conn.query(`INSERT INTO locks (id, createdAt, endsAt, mustEndAt, timerVisible, status, lockeeId, keyholderId) VALUES ()`);
+		const createdAt = new Date().getTime(); // Get current time
+		// Calculate a random date in the future within the min and max time
+		const endsAt = Math.round((lock.maxDuration - lock.minDuration) / (Math.random() + Math.random() * 50 + 1)) + createdAt;
+
+		// Generate an ID
+		let id = await ensureUniqueLockId(timedStringGen(30));
+
+		let timerVisible = lock.timerVisible ?? true;
+		let mustEndAt = lock.mustEndAt ?? null;
+
+		let status = "locked";
+
+		conn = await pool.getConnection();
+		let response = await conn.query(`INSERT INTO locks (id, createdAt, endsAt, mustEndAt, timerVisible, status, lockeeId) VALUES ('${id}', ${createdAt}, ${endsAt}, ${mustEndAt}, ${timerVisible}, '${status}', '${lockeeId}') RETURNING *`);
+		response[0].createdAt = response[0].createdAt.toString();
+		response[0].endsAt = response[0].endsAt.toString();
+		if (response[0].mustEndAt) response[0].mustEndAt = response[0].mustEndAt.toString();
+		if (response[0].frozenAt) response[0].frozenAt = response[0].frozenAt.toString();
+
+		return response[0];
 	} catch (e) {
 		console.error(e);
 	} finally {
@@ -138,4 +168,10 @@ async function ensureUniqueAccessToken(token) {
 	let session = await getSession(token);
 	if (session == null) return token;
 	return ensureUniqueAccessToken(timedStringGen(70));
+}
+
+async function ensureUniqueLockId(id) {
+	let lock = await getLock(id);
+	if (lock == null) return id;
+	return ensureUniqueLockId(timedStringGen(30));
 }

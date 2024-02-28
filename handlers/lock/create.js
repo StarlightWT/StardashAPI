@@ -1,5 +1,13 @@
 const { startLock } = require("../../src/databaseHandler");
 
+/*
+	{
+		"minDuration":"ms"
+		"maxDuration":"ms"
+		"mustEndAt": "timestamp"
+		"timerVisible": "bool"
+	}
+*/
 module.exports = (req, res) => {
 	const authToken = req.headers["authorization"];
 	if (!authToken)
@@ -13,7 +21,6 @@ module.exports = (req, res) => {
 	if (!maxDuration) return res.status(400).send({ message: "Missing maxDuration!" });
 
 	startLock(req.body, authToken).then((response) => {
-		console.log(response);
-		res.sendStatus(200);
+		res.status(200).send(response);
 	});
 };
