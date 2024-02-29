@@ -207,7 +207,7 @@ async function toggleFreeze(lockId, newState, accessToken) {
 		if (!lock) return 1;
 
 		if (lock.keyholderId && lock.keyholderId != accessToken) return 2;
-		// if (!lock.keyholderId) return 2; // In the future allow extensions to modify
+		if (!lock.keyholderId) return 2; // In the future allow extensions to modify
 
 		conn = await pool.getConnection();
 
