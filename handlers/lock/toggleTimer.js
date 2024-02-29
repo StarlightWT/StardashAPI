@@ -13,6 +13,6 @@ module.exports = (req, res) => {
 	if (!newState) return res.status(400).send({ message: "Missing newState" });
 
 	toggleLockTimer(id, newState, authorization).then((response) => {
-		console.log(response);
+		return res.status(200).send(response);
 	});
 };

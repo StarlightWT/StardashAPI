@@ -168,15 +168,10 @@ async function startLock(lock, accessToken) {
 
 		conn = await pool.getConnection();
 		let response = await conn.query(`INSERT INTO locks (id, createdAt, endsAt, mustEndAt, timerVisible, status, lockeeId) VALUES ('${id}', ${createdAt}, ${endsAt}, ${mustEndAt}, ${timerVisible}, '${status}', '${lockeeId}') RETURNING *`);
-		response[0].createdAt = response[0].createdAt.toString();
-		response[0].endsAt = response[0].endsAt.toString();
 
-		if (response[0].mustEndAt) response[0].mustEndAt = response[0].mustEndAt.toString();
-		if (response[0].frozenAt) response[0].frozenAt = response[0].frozenAt.toString();
+		response = ensureReturn(response[0]);
 
-		response[0].timerVisible ? (response[0].timerVisible = true) : (response[0].timerVisible = false);
-
-		return response[0];
+		return response;
 	} catch (e) {
 		console.error(e);
 	} finally {
@@ -193,11 +188,16 @@ async function toggleLockTimer(lockId, newState, accessToken) {
 		if (!lock) return 1;
 
 		if (lock.keyholderId && lock.keyholderId != accessToken) return 2;
-		if (!lock.keyholderId) return 2; // In the future allow extensions to modify
+		// if (!lock.keyholderId) return 2; // In the future allow extensions to modify
 
 		conn = await pool.getConnection();
 
-		let response = await conn.query(`UPDATE `);
+		let response = await conn.query(`UPDATE locks SET timerVisible = ${newState} WHERE id = '${lockId}'`);
+		response = await conn.query(`SELECT * FROM locks WHERE id='${lockId}'`);
+
+		response = ensureReturn(response[0]);
+
+		return response;
 	} catch (e) {
 		console.error(e);
 	} finally {
@@ -231,4 +231,14 @@ async function ensureUniqueLockId(id) {
 	let lock = await getLock(id);
 	if (lock == null) return id;
 	return ensureUniqueLockId(timedStringGen(30));
+}
+
+function ensureReturn(response) {
+	response.createdAt = response.createdAt.toString();
+	response.endsAt = response.endsAt.toString();
+	if (response.mustEndAt) response.mustEndAt = response.mustEndAt.toString();
+	if (response.frozenAt) response.frozenAt = response.frozenAt.toString();
+	response.timerVisible ? (response.timerVisible = true) : (response.timerVisible = false);
+
+	return response;
 }
