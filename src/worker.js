@@ -1,4 +1,5 @@
 const cluster = require("cluster");
+const axios = require("axios");
 
 const ttl = 5;
 let requestCounter = 0;
@@ -10,6 +11,8 @@ const port = process.env.API_PORT;
 app.listen(port, () => console.log(`I:[${process.pid}] listening on http://localhost:${port}`));
 
 app.use(express.json());
+app.use(express.static("css"));
+app.set("view engine", "pug");
 
 app.use((req, res, next) => {
 	requestCounter++;
@@ -29,3 +32,4 @@ setTimeout(() => {
 }, ttl * 1000 * 60); // ttl = minutes
 
 require("./mainHandler")(app);
+require("./viewHandler")(app);

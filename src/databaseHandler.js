@@ -152,7 +152,7 @@ async function startLock(lock, accessToken) {
 
 		const createdAt = new Date().getTime(); // Get current time
 		// Calculate a random date in the future within the min and max time
-		const endsAt = Math.round((lock.maxDuration - lock.minDuration) / (Math.random() + Math.random() * 50 + 1)) + createdAt;
+		const endsAt = Math.round((lock.maxDuration - lock.minDuration) / (Math.random() + Math.random() * 50 + 1)) + createdAt + parseInt(lock.minDuration);
 
 		// Generate an ID
 		let id = await ensureUniqueLockId(timedStringGen(30));

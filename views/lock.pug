@@ -1,0 +1,28 @@
+html
+  head
+    title= title
+    link(rel='stylesheet', type='text/css', href='/main.css')
+  body
+    .timer__container 
+        h1 Time left
+
+        #timer 
+            .window
+                .digits= days
+                .title days
+            .window
+                .digits= hours
+                .title hours
+            .window
+                .digits= minutes
+                .title minutes
+            .window
+                .digits= seconds
+                .title seconds
+if authorized
+    #actions
+        .action freeze
+        .action add time
+        .action unlock
+
+    

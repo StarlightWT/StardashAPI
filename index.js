@@ -19,7 +19,6 @@ cluster.schedulingPolicy = cluster.SCHED_RR;
 cluster.setupPrimary({
 	exec: "./src/worker.js",
 	args: ["--use", "https"],
-	// silent: true,
 });
 
 _fork(maxWorkers / 2);
