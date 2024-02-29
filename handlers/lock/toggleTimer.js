@@ -12,6 +12,8 @@ module.exports = (req, res) => {
 	if (!id) return res.status(400).send({ message: "Missing lockId" });
 	if (!newState) return res.status(400).send({ message: "Missing newState" });
 
+	if (newState != "false" && newState != "true") return res.status(400).send({ message: "Invalid type, newState must be true or false!" });
+
 	toggleLockTimer(id, newState, authorization).then((response) => {
 		return res.status(200).send(response);
 	});
