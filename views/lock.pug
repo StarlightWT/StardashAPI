@@ -4,25 +4,46 @@ html
     link(rel='stylesheet', type='text/css', href='/main.css')
   body
     .timer__container 
-        h1 Time left
+      h1 Time left
 
-        #timer 
-            .window
-                .digits= days
-                .title days
-            .window
-                .digits= hours
-                .title hours
-            .window
-                .digits= minutes
-                .title minutes
-            .window
-                .digits= seconds
-                .title seconds
-if authorized
+      #timer 
+        .window
+          .digits#days
+          .title days
+        .window
+          .digits#hours 
+          .title hours
+        .window
+          .digits#minutes 
+          .title minutes
+        .window
+          .digits#seconds
+          .title seconds
+  if authorized
     #actions
-        .action freeze
-        .action add time
-        .action unlock
-
-    
+      .action freeze
+      .action add time
+      .action unlock
+    script.
+        var timeRemaining = !{timeRemaining};
+        function updateTime(timeRemaining){
+            let times = !{timeCalc}(timeRemaining);
+            
+            let daysElement = document.getElementById("days"),
+            hoursElement = document.getElementById("hours"),
+            minutesElement = document.getElementById("minutes"),
+            secondsElement = document.getElementById("seconds");
+            
+            daysElement.innerHTML =    times.days    < 10 ? `0${times.days}`    : times.days;
+            hoursElement.innerHTML =   times.hours   < 10 ? `0${times.hours}`   : times.hours;
+            minutesElement.innerHTML = times.minutes < 10 ? `0${times.minutes}` : times.minutes;
+            secondsElement.innerHTML = times.seconds < 10 ? `0${times.seconds}` : times.seconds;
+        }
+        
+        updateTime(timeRemaining);
+        timeRemaining -= 1000;
+        
+        setInterval(() => { 
+            updateTime(timeRemaining);
+            timeRemaining -= 1000;
+        },1000);

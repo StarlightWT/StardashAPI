@@ -6,12 +6,9 @@ module.exports = (app) => {
 		getLock(id).then((data) => {
 			// let timeRemaining = data.endsAt - Date.now();
 			let timeRemaining = data.endsAt - Date.now();
-			timeRemaining = getTime(timeRemaining);
 			res.render("lock", {
-				days: timeRemaining.days,
-				hours: timeRemaining.hours,
-				minutes: timeRemaining.minutes,
-				seconds: timeRemaining.seconds,
+				timeRemaining: timeRemaining,
+				timeCalc: getTime,
 				authorized: true,
 			});
 		});
@@ -19,7 +16,6 @@ module.exports = (app) => {
 };
 
 function getTime(timestamp) {
-	console.log(timestamp);
 	let days = 0,
 		hours = 0,
 		minutes = 0,
