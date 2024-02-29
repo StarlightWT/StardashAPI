@@ -1,4 +1,4 @@
-const { toggleLockTimer } = require("../../src/databaseHandler");
+const { toggleFreeze } = require("../../src/databaseHandler");
 
 /* 
     !"newState"="string"
@@ -15,7 +15,7 @@ module.exports = (req, res) => {
 
 	if (newState != "false" && newState != "true") return res.status(400).send({ message: "Invalid type, newState must be true or false!" });
 
-	toggleLockTimer(id, newState, authorization).then((response) => {
+	toggleFreeze(id, newState, authorization).then((response) => {
 		return res.status(200).send(response);
 	});
 };

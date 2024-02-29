@@ -72,12 +72,8 @@ async function getLock(id) {
 		conn = await pool.getConnection();
 		let lock = await conn.query(`SELECT * FROM locks WHERE id='${id}'`);
 		if (!lock[0]?.id) return null;
-		lock[0].createdAt = lock[0].createdAt.toString();
-		lock[0].endsAt = lock[0].endsAt.toString();
-		if (lock[0].mustEndAt) lock[0].mustEndAt = lock[0].mustEndAt.toString();
-		if (lock[0].frozenAt) lock[0].frozenAt = lock[0].frozenAt.toString();
-		lock[0].timerVisible ? (lock[0].timerVisible = true) : (lock[0].timerVisible = false);
-		return lock[0];
+		lock = ensureReturn(lock[0]);
+		return lock;
 	} catch (e) {
 		console.error(e);
 		return 1;
@@ -188,16 +184,38 @@ async function toggleLockTimer(lockId, newState, accessToken) {
 		if (!lock) return 1;
 
 		if (lock.keyholderId && lock.keyholderId != accessToken) return 2;
+		if (!lock.keyholderId) return 2; // In the future allow extensions to modify
+
+		conn = await pool.getConnection();
+
+		await conn.query(`UPDATE locks SET timerVisible = ${newState} WHERE id = '${lockId}'`);
+
+		return await getLock(lockId);
+	} catch (e) {
+		console.error(e);
+	} finally {
+		if (conn) await conn.end();
+	}
+}
+
+// 1 - Lock not found
+// 2 - Not authorized
+async function toggleFreeze(lockId, newState, accessToken) {
+	let conn;
+	try {
+		const lock = await getLock(lockId);
+		if (!lock) return 1;
+
+		if (lock.keyholderId && lock.keyholderId != accessToken) return 2;
 		// if (!lock.keyholderId) return 2; // In the future allow extensions to modify
 
 		conn = await pool.getConnection();
 
-		let response = await conn.query(`UPDATE locks SET timerVisible = ${newState} WHERE id = '${lockId}'`);
-		response = await conn.query(`SELECT * FROM locks WHERE id='${lockId}'`);
+		if (newState == "true") newState = new Date(Date.now()).getTime();
+		else newState = null;
 
-		response = ensureReturn(response[0]);
-
-		return response;
+		await conn.query(`UPDATE locks SET frozenAt=${newState} WHERE id='${lockId}'`);
+		return await getLock(lockId);
 	} catch (e) {
 		console.error(e);
 	} finally {
@@ -213,6 +231,7 @@ module.exports = {
 	startLock,
 	loginUser,
 	toggleLockTimer,
+	toggleFreeze,
 };
 
 async function ensureUniqueId(id) {
