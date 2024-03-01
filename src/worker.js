@@ -1,5 +1,4 @@
 const cluster = require("cluster");
-const axios = require("axios");
 
 const ttl = 5;
 let requestCounter = 0;

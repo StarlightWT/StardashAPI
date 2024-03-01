@@ -2,12 +2,12 @@ const cookieParser = require("cookie-parser");
 const { getLock } = require("./databaseHandler");
 
 module.exports = (app) => {
-	app.use(cookieParser());
+	app.use(cookieParser(process.env.COOKIE_SECRET));
 
 	app.get("/locks/:id", (req, res) => {
 		const { id } = req.params;
 
-		const accessToken = req.cookies.token ?? null;
+		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
 
 		getLock(id, accessToken).then((data) => {
 			if (!data) return res.status(404).render("error");
@@ -25,6 +25,12 @@ module.exports = (app) => {
 	});
 
 	app.get("/login", (req, res) => {
+		let options = {
+			maxAge: 1000 * 60 * 60 * 24 * 30 * 2, // would expire after 60 days
+			httpOnly: true, // The cookie only accessible by the web server
+			signed: true, // Indicates if the cookie should be signed
+		};
+		res.cookie("token", "270224yldPbCd5UVx2EGQ5Lh3MILmuYAo1MbRF97kI5RopzFBZbEbClnoqm1l6ZpNW0xTpKCVj7u", options);
 		res.render("login");
 	});
 };
