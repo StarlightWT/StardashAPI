@@ -1,16 +1,19 @@
 * {
 	font-family: Arial, Helvetica, sans-serif;
 	color: white;
+	--secondary-colour: #8319e0;
+	--background-color: #161616;
+	--sec-bg-color: #292828;
 }
 
 body {
-	background-color: #161616;
+	background-color: var(--background-color);
 }
 
 .timer__container {
 	max-width: max-content;
 	margin: auto;
-	background-color: #292828;
+	background-color: var(--sec-bg-color);
 	padding-block: 0.5rem;
 	padding-inline: 1rem;
 	border-radius: 0.5rem;
@@ -40,14 +43,14 @@ body {
 	justify-content: center;
 	align-items: center;
 	font-size: 1.5rem;
-	border: 5px solid #292828;
+	border: 5px solid var(--sec-bg-color);
 	border-radius: 1.25rem;
 }
 
 #actions {
 	margin-top: 1rem;
 	padding: 0.5rem 1rem;
-	background-color: #292828;
+	background-color: var(--sec-bg-color);
 	max-width: max-content;
 	margin-inline: auto;
 	display: flex;
@@ -60,7 +63,7 @@ body {
 	margin-inline: 0.5rem;
 	background-color: #4a4a4a;
 	text-align: center;
-	border: 3px solid #292828;
+	border: 3px solid var(--sec-bg-color);
 	border-radius: 0.5rem;
 	padding: 0.25rem 0.5rem;
 	transition-duration: 250ms;
@@ -70,4 +73,62 @@ body {
 	cursor: pointer;
 	transform: scale(1.05);
 	border-color: #fff;
+}
+
+#error404 {
+	margin-inline: auto;
+	width: fit-content;
+	margin-top: 33vh;
+	text-align: center;
+}
+
+#error404 > h1 {
+	margin: 0;
+}
+
+#error404 > #return {
+	all: unset;
+	cursor: pointer;
+	font-size: 20px;
+	margin-top: 0.5rem;
+	padding: 0.5rem 1.5rem;
+	border-radius: 1rem;
+	background-color: var(--secondary-colour);
+	transition-duration: 250ms;
+}
+
+#error404 > #return:hover {
+	transform: scale(1.05);
+}
+
+#navBar {
+	display: flex;
+	justify-content: space-between;
+}
+
+#navBar > #list {
+	list-style: none;
+	padding: 0;
+	display: flex;
+}
+
+#navBar > #list > li {
+	width: 100px;
+	padding-block: 0.75rem;
+	background-color: var(--sec-bg-color);
+	text-align: center;
+	margin-inline: 0.25rem;
+	border: 2px solid var(--background-color);
+	border-radius: 0.5rem;
+	transition-duration: 250ms;
+}
+
+#navBar > #list > li:hover {
+	cursor: pointer;
+	transform: scale(1.05);
+	border-color: #fff;
+}
+
+#navBar > #list > li > a {
+	all: unset;
 }

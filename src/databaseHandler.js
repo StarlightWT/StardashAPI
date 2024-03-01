@@ -66,13 +66,19 @@ async function loginUser(username, email, password) {
 	}
 }
 
-async function getLock(id) {
+async function getLock(id, accessToken) {
 	let conn;
 	try {
 		conn = await pool.getConnection();
 		let lock = await conn.query(`SELECT * FROM locks WHERE id='${id}'`);
 		if (!lock[0]?.id) return null;
 		lock = ensureReturn(lock[0]);
+		lock.authorized = false;
+		if (accessToken) {
+			const session = await getSession(accessToken);
+
+			if (lock.keyholderId == session.userId) lock.authorized = true;
+		}
 		return lock;
 	} catch (e) {
 		console.error(e);

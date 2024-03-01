@@ -1,17 +1,28 @@
-const { getLock, loginUser } = require("./databaseHandler");
+const { getLock } = require("./databaseHandler");
 
 module.exports = (app) => {
 	app.get("/locks/:id", (req, res) => {
 		const { id } = req.params;
-		getLock(id).then((data) => {
-			// let timeRemaining = data.endsAt - Date.now();
+
+		const accessToken = req.header("authorization") ?? null;
+
+		getLock(id, accessToken).then((data) => {
+			if (!data) return res.status(404).render("error");
 			let timeRemaining = data.endsAt - Date.now();
 			res.render("lock", {
 				timeRemaining: timeRemaining,
 				timeCalc: getTime,
-				authorized: true,
+				authorized: data.authorized,
 			});
 		});
+	});
+
+	app.get("/", (req, res) => {
+		res.render("home");
+	});
+
+	app.get("/login", (req, res) => {
+		res.render("login");
 	});
 };
 
