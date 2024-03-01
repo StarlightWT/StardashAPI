@@ -4,19 +4,8 @@ nav#navBar
         li(onclick="window.location='/'")
             a Home
         
-        li(onclick="redirectToLock()")
+        li(onclick="window.location='/locks/290224tuX2MuX2TDetzlQgj87pFL6IWKUDfT'")
             a TimerTest
         
         li(onclick="window.location='/login'")  
             a login
-script. 
-    function redirectToLock(){
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", "/locks/290224tuX2MuX2TDetzlQgj87pFL6IWKUDfT", true);
-        xhr.setRequestHeader("Authorization", "270224yldPbCd5UVx2EGQ5Lh3MILmuYAo1MbRF97kI5RopzFBZbEbClnoqm1l6ZpNW0xTpKCVj7u")
-        xhr.send();
-
-        xhr.onload = ()=>{
-        }
-        
-    }

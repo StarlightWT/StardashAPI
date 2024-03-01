@@ -1,10 +1,13 @@
+const cookieParser = require("cookie-parser");
 const { getLock } = require("./databaseHandler");
 
 module.exports = (app) => {
+	app.use(cookieParser());
+
 	app.get("/locks/:id", (req, res) => {
 		const { id } = req.params;
 
-		const accessToken = req.header("authorization") ?? null;
+		const accessToken = req.cookies.token ?? null;
 
 		getLock(id, accessToken).then((data) => {
 			if (!data) return res.status(404).render("error");
