@@ -21,7 +21,10 @@ module.exports = (app) => {
 	});
 
 	app.get("/", (req, res) => {
-		res.render("home");
+		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
+		res.render("home", {
+			authorized: accessToken,
+		});
 	});
 
 	app.get("/login", (req, res) => {
@@ -32,6 +35,10 @@ module.exports = (app) => {
 		};
 		res.cookie("token", "270224yldPbCd5UVx2EGQ5Lh3MILmuYAo1MbRF97kI5RopzFBZbEbClnoqm1l6ZpNW0xTpKCVj7u", options);
 		res.render("login");
+	});
+
+	app.get("/discord", (req, res) => {
+		res.redirect("https://discord.gg/8pPyZx4Rr4");
 	});
 };
 

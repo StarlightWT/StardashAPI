@@ -12,9 +12,8 @@ const port = process.env.API_PORT;
 app.listen(port, () => console.log(`I:[${process.pid}] listening on http://localhost:${port}`));
 
 app.use(express.json());
-app.use(express.static("css"));
-app.use(express.static("images"));
-app.use(favicon("./images/starDashLogoV1.ico"));
+app.use(express.static("public"));
+app.use(favicon("./public/images/starDashLogoV1.ico"));
 app.set("view engine", "pug");
 
 app.use((req, res, next) => {

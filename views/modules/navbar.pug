@@ -1,11 +1,15 @@
 nav#navBar 
-    #logo
-    ul#list
-        li(onclick="window.location='/'")
-            a Home
-        
-        li(onclick="window.location='/locks/290224tuX2MuX2TDetzlQgj87pFL6IWKUDfT'")
-            a TimerTest
-        
-        li(onclick="window.location='/login'")  
-            a login
+    #title
+        #logo
+        h1 StarDash 
+    ul#list        
+        if(!authorized)
+            li(onclick="window.location='/login'")
+                a login
+        if(authorized)
+            li(onclick="window.location='/dashboard'")
+                a Dashboard
+            li(onclick="window.location='/activity'")
+                a Activity
+        li(onclick="window.location='/discord'")
+            a Discord
