@@ -1,5 +1,7 @@
 const cluster = require("cluster");
 
+const favicon = require("serve-favicon");
+
 const ttl = 5;
 let requestCounter = 0;
 
@@ -11,6 +13,8 @@ app.listen(port, () => console.log(`I:[${process.pid}] listening on http://local
 
 app.use(express.json());
 app.use(express.static("css"));
+app.use(express.static("images"));
+app.use(favicon("./images/starDashLogoV1.ico"));
 app.set("view engine", "pug");
 
 app.use((req, res, next) => {
