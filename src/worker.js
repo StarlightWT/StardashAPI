@@ -35,3 +35,7 @@ setTimeout(() => {
 
 require("./mainHandler")(app);
 require("./viewHandler")(app);
+
+app.all("*", (req, res) => {
+	res.status(400).render("error");
+});

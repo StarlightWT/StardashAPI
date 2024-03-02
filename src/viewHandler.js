@@ -37,6 +37,11 @@ module.exports = (app) => {
 		res.render("login");
 	});
 
+	app.get("/dashboard", (req, res) => {
+		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
+		if (!accessToken) return res.redirect("/");
+	});
+
 	app.get("/discord", (req, res) => {
 		res.redirect("https://discord.gg/8pPyZx4Rr4");
 	});
