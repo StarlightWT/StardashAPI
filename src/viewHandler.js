@@ -12,7 +12,7 @@ module.exports = (app) => {
 		getLock(id, accessToken).then((data) => {
 			if (!data) return res.status(404).render("error");
 			let timeRemaining = data.endsAt - Date.now();
-			res.render("lock", {
+			return res.render("lock", {
 				timeRemaining: timeRemaining,
 				timeCalc: getTime,
 				authorized: data.authorized,
@@ -22,7 +22,7 @@ module.exports = (app) => {
 
 	app.get("/", (req, res) => {
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
-		res.render("home", {
+		return res.render("home", {
 			authorized: accessToken,
 		});
 	});
@@ -34,16 +34,18 @@ module.exports = (app) => {
 			signed: true, // Indicates if the cookie should be signed
 		};
 		res.cookie("token", "270224yldPbCd5UVx2EGQ5Lh3MILmuYAo1MbRF97kI5RopzFBZbEbClnoqm1l6ZpNW0xTpKCVj7u", options);
-		res.render("login");
+		return res.render("login");
 	});
 
 	app.get("/dashboard", (req, res) => {
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
 		if (!accessToken) return res.redirect("/");
+
+		return res.render("dashboard");
 	});
 
 	app.get("/discord", (req, res) => {
-		res.redirect("https://discord.gg/8pPyZx4Rr4");
+		return res.redirect("https://discord.gg/8pPyZx4Rr4");
 	});
 };
 
