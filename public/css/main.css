@@ -106,6 +106,8 @@ body {
 #navBar {
 	display: flex;
 	justify-content: space-between;
+	max-width: 1000px;
+	margin-inline: auto;
 }
 
 #navBar > #list {
