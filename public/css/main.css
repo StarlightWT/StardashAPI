@@ -143,6 +143,7 @@ body {
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
+	text-decoration: none;
 }
 
 #navBar > #title > h1 {
@@ -156,4 +157,83 @@ body {
 	height: 50px;
 	width: 50px;
 	background-size: contain;
+}
+
+#welcome {
+	max-width: 1000px;
+	display: flex;
+	margin-inline: auto;
+	margin-top: 2rem;
+}
+
+#welcome > #left {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	height: 400px;
+	padding: 1rem;
+	border-top-left-radius: 1rem;
+	border-bottom-left-radius: 1rem;
+	background-color: var(--sec-bg-color);
+}
+
+#welcome > #left > h1 {
+	margin: 0;
+	margin-top: 2rem;
+	margin-left: 1rem;
+}
+
+#welcome > #left > h2 {
+	margin: 0;
+	margin-left: 1.5rem;
+	font-weight: 600;
+}
+
+#welcome > #left > #buttons > a {
+	all: unset;
+	position: absolute;
+	padding: 0.5rem 1.5rem;
+	width: fit-content;
+	font-size: 20px;
+	font-weight: 500;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition-duration: 250ms;
+}
+
+#welcome > #left > #buttons > a:hover {
+	transform: scale(1.1);
+}
+
+#welcome > #left > #buttons > #star {
+	right: 2rem;
+	bottom: 2.5rem;
+	background-color: var(--secondary-colour);
+}
+#welcome > #left > #buttons > #feat {
+	right: 19rem;
+	bottom: 2.5rem;
+	background-color: var(--background-color);
+}
+
+#welcome > #right {
+	width: 50%;
+	height: 400px;
+	padding: 1rem;
+	border-top-right-radius: 1rem;
+	border-bottom-right-radius: 1rem;
+}
+
+#features {
+	max-width: 1000px;
+	margin-inline: auto;
+	margin-top: 2rem;
+	padding: 0;
+	list-style: none;
+}
+
+#features > .feature {
+	width: 100%;
+	height: 200px;
 }

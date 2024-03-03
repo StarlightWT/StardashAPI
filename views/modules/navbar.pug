@@ -1,15 +1,18 @@
 nav#navBar 
-    #title
+    a#title(href="/")
         #logo
         h1 StarDash 
     ul#list        
         if(!authorized)
             li(onclick="window.location='/login'")
-                a login
+                a Sign in
+            li(onclick="window.location='/signup'")
+                a Sign up
         if(authorized)
             li(onclick="window.location='/dashboard'")
                 a Dashboard
             li(onclick="window.location='/activity'")
                 a Activity
-        li(onclick="window.location='/discord'")
-            a Discord
+            li(onclick="window.location='/discord'")
+                a Discord
+        

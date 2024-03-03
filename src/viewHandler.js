@@ -41,7 +41,7 @@ module.exports = (app) => {
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
 		if (!accessToken) return res.redirect("/");
 
-		return res.render("dashboard");
+		return res.render("dashboard", { authorized: true });
 	});
 
 	app.get("/discord", (req, res) => {
