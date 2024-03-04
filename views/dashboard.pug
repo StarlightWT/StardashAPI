@@ -30,10 +30,39 @@ html
                 <i class="fa-regular fa-snowflake"></i>
                 <i class="fa-solid fa-up-right-from-square"></i>
               </div>
-              <div id="name">${lock.lockee.username}</div>
-            `;
+              <div id="name">${lock.lockee.username}</div>`;
+
+            li.innerHTML += `<script>
+            console.log("Hello world!");
+            var timeRemaining = lock.endsAt - Date.now();
+                function updateTime(timeRemaining){
+                let times = !{timeCalc}(timeRemaining);
+            
+                let daysElement = document.getElementById("days"),
+                  hoursElement = document.getElementById("hours"),
+                  minutesElement = document.getElementById("minutes"),
+                  secondsElement = document.getElementById("seconds");
+            
+                daysElement.innerHTML =    times.days    < 10 ? \`0\${times.days}\`    : times.days;
+                hoursElement.innerHTML =   times.hours   < 10 ? \`0\${times.hours}\`   : times.hours;
+                minutesElement.innerHTML = times.minutes < 10 ? \`0\${times.minutes}\` : times.minutes;
+                secondsElement.innerHTML = times.seconds < 10 ? \`0\${times.seconds}\` : times.seconds;
+              }
+        
+              updateTime(timeRemaining);
+              timeRemaining -= 1000;
+        
+              setInterval(() => { 
+                  updateTime(timeRemaining);
+                  timeRemaining -= 1000;
+              },1000);
+              \<\/\s\c\r\i\p\t\>
+            `
+              
+
             list.append(li);
           });
+
 
 
     if role=="lockee" || role=="switch"

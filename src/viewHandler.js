@@ -42,7 +42,7 @@ module.exports = (app) => {
 		if (!accessToken) return res.redirect("/");
 		let locks = await getKhLocks(accessToken);
 		let serializedLocks = locks.map((lock) => JSON.stringify(lock));
-		return res.render("dashboard", { authorized: true, role: "keyholder", locks: serializedLocks });
+		return res.render("dashboard", { authorized: true, role: "keyholder", locks: serializedLocks, timeCalc: getTime });
 	});
 
 	app.get("/discord", (req, res) => {
