@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
 
 * {
 	font-family: "Open Sans";
@@ -280,4 +281,68 @@ body {
 	cursor: pointer;
 	transform: scale(1.1);
 	box-shadow: 2px 2px var(--secondary-colour), -2px -2px var(--secondary-colour), 2px -2px var(--secondary-colour), -2px 2px var(--secondary-colour);
+}
+
+#activeLocks {
+	max-width: 1000px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	justify-content: center;
+	margin-inline: auto;
+}
+
+#activeLocks > #lockList {
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	padding: 0;
+}
+
+#activeLocks > #lockList > li {
+	position: relative;
+	width: 30%;
+	margin: 0.5rem;
+	height: 200px;
+	background-color: var(--sec-bg-color);
+	display: flex;
+	flex-direction: column;
+	border: 2px solid var(--sec-bg-color);
+	border-radius: 0.5rem;
+}
+
+#activeLocks > #lockList > li > #timer {
+	width: 100%;
+	text-align: center;
+	background-color: var(--background-color);
+	height: 25%;
+	justify-content: center;
+	border-top-left-radius: 0.5rem;
+	border-top-right-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 18px;
+}
+
+#activeLocks > #lockList > li > #actions > i {
+	margin: 0.25rem;
+	transition-duration: 250ms;
+}
+
+#activeLocks > #lockList > li > #actions > i:hover {
+	color: var(--secondary-colour);
+	cursor: pointer;
+}
+
+#activeLocks > #lockList > li > #actions {
+	margin-top: 0;
+}
+
+#activeLocks > #lockList > li > #name {
+	position: absolute;
+	bottom: 0.3rem;
+	left: 0;
+	right: 0;
+	margin-inline: auto;
 }

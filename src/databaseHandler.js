@@ -66,6 +66,29 @@ async function loginUser(username, email, password) {
 	}
 }
 
+// 1 Invalid accessToken
+async function getKhLocks(accessToken) {
+	let conn;
+	try {
+		conn = await pool.getConnection();
+		let id = await getSession(accessToken);
+		id = id.userId;
+		if (!id) return 1;
+		let locks = await conn.query(`SELECT * FROM locks WHERE keyholderId='${id}'`);
+		locks.forEach(async (lock) => {
+			lock = ensureReturn(lock);
+			lock.lockee = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.lockeeId}'`))[0];
+			lock.keyholder = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.keyholderId}'`))[0];
+		});
+		return locks;
+	} catch (e) {
+		console.error(e);
+		return 1;
+	} finally {
+		if (conn) await conn.end();
+	}
+}
+
 async function getLock(id, accessToken) {
 	let conn;
 	try {
@@ -79,6 +102,9 @@ async function getLock(id, accessToken) {
 
 			if (lock.keyholderId == session.userId) lock.authorized = true;
 		}
+		lock.lockee = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.lockeeId}'`))[0];
+		lock.keyholder = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.keyholderId}'`))[0];
+
 		return lock;
 	} catch (e) {
 		console.error(e);
@@ -238,6 +264,7 @@ module.exports = {
 	loginUser,
 	toggleLockTimer,
 	toggleFreeze,
+	getKhLocks,
 };
 
 async function ensureUniqueId(id) {
