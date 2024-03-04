@@ -4,5 +4,17 @@ html
     link(rel='stylesheet', type='text/css', href='/css/main.css')
   body
     include modules/navbar.pug
+    if(!role)
+      #selectRole 
+        h1 Welcome to StarDash! 
+        h2 Please select your role: 
+        .buttons 
+          a keyholder 
+          a lockee
+        h3 (You can change this at any time!)
     
+    if(role && role=="keyholder")
+
+    if(role && role=="lockee")
+
       

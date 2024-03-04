@@ -237,3 +237,47 @@ body {
 	width: 100%;
 	height: 200px;
 }
+
+#selectRole {
+	margin-top: 5rem;
+	display: flex;
+	flex-direction: column;
+	max-width: 1000px;
+	margin-inline: auto;
+	text-align: center;
+}
+
+#selectRole > * {
+	margin: 0;
+}
+
+#selectRole > h3 {
+	font-weight: 400;
+	font-size: 14px;
+}
+#selectRole > h2 {
+	margin-top: 1rem;
+}
+
+#selectRole > .buttons {
+	display: flex;
+	justify-content: center;
+	margin-block: 2rem;
+}
+
+#selectRole > .buttons > a {
+	background-color: var(--sec-bg-color);
+	margin-inline: 1rem;
+	width: 200px;
+	padding-block: 1.25rem;
+	border-radius: 0.5rem;
+	transition-duration: 250ms;
+	font-weight: 500;
+	font-size: 20px;
+}
+
+#selectRole > .buttons > a:hover {
+	cursor: pointer;
+	transform: scale(1.1);
+	box-shadow: 2px 2px var(--secondary-colour), -2px -2px var(--secondary-colour), 2px -2px var(--secondary-colour), -2px 2px var(--secondary-colour);
+}
