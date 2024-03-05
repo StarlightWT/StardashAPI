@@ -43,6 +43,10 @@ module.exports = (app) => {
 		return res.redirect("/");
 	});
 
+	app.get("/premium", (req, res) => {
+		return res.redirect("https://buy.stripe.com/5kA9E29LDeFlcAo144");
+	});
+
 	app.get("/dashboard", async (req, res) => {
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
 		if (!accessToken) return res.redirect("/");
