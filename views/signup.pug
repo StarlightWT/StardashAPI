@@ -19,7 +19,7 @@ html
                 const email = document.getElementById("email").value;
                 const password = document.getElementById("pass").value;
             
-                fetch("http://localhost:8080/v1/users/create", {
+                fetch("http://stardash.app/v1/users/create", {
                     method: "POST",
                     headers: [['Content-Type', 'application/json']],
                     body: JSON.stringify({
