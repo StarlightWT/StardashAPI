@@ -10,13 +10,6 @@ const pool = mariadb.createPool({
 	database: process.env.DB_NAME,
 });
 
-process.on("SIGINT", async function () {
-	if (conn) {
-		await conn.end();
-	}
-	process.exit();
-});
-
 async function testConnection() {
 	console.log(`I:[PR] DB IP=${process.env.DB_HOST}`);
 	let conn;
