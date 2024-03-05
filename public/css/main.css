@@ -27,6 +27,22 @@ body {
 	font-size: 24px;
 }
 
+#WIP {
+	position: absolute;
+	top: 0;
+	width: 90%;
+	left: 0;
+	right: 0;
+	margin-inline: auto;
+	font-size: 20px;
+	background-color: red;
+	text-align: center;
+	font-weight: bold;
+	padding-block: 0.25rem;
+	border-bottom-left-radius: 1rem;
+	border-bottom-right-radius: 1rem;
+}
+
 #timer {
 	display: flex;
 	text-align: center;
