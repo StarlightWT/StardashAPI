@@ -25,7 +25,7 @@ html
               #actions 
                 i(class="fa-regular fa-clock")
                 i(class="fa-regular fa-snowflake")
-                i(class="fa-solid fa-up-right-from-square")
+                i(class="fa-solid fa-up-right-from-square" onclick=`window.location = '/locks/${lock.id}'`)
               #name= lock.lockee.username
               #lockedSince Since: #{date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()}
     if role=="lockee" || role=="switch"
