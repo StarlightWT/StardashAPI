@@ -1,5 +1,5 @@
 const cookieParser = require("cookie-parser");
-const { getLock } = require("./databaseHandler");
+const { getLock, getKhLocks, getSession } = require("./databaseHandler");
 
 module.exports = (app) => {
 	app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -37,11 +37,21 @@ module.exports = (app) => {
 		return res.render("login");
 	});
 
-	app.get("/dashboard", (req, res) => {
+	app.get("/dashboard", async (req, res) => {
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
 		if (!accessToken) return res.redirect("/");
 
-		return res.render("dashboard", { authorized: true });
+		//Get user ID
+		const userId = (await getSession(accessToken)).userId;
+
+		//Get KH data
+		let locks = await getKhLocks(userId);
+		let serializedLocks = locks.map((lock) => JSON.stringify(lock));
+
+		//Get lockee data
+		let lock = await getLock(null, accessToken, userId);
+
+		return res.render("dashboard", { authorized: true, role: "switch", locks: serializedLocks, timeCalc: getTime, lock: JSON.stringify(lock) });
 	});
 
 	app.get("/discord", (req, res) => {

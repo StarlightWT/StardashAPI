@@ -15,13 +15,14 @@ async function testConnection() {
 	let conn;
 	try {
 		conn = await pool.getConnection();
+
 		return 1;
 	} catch (e) {
 		console.error(e);
 		return 0;
 	} finally {
 		if (conn) {
-			await conn.end();
+			await conn.close();
 		}
 	}
 }
@@ -37,7 +38,7 @@ async function getUser(id) {
 		console.error(e);
 		return 1;
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -62,15 +63,36 @@ async function loginUser(username, email, password) {
 	} catch (e) {
 		console.error(e);
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
-async function getLock(id, accessToken) {
+// 1 Invalid accessToken
+async function getKhLocks(id) {
+	let conn;
+	try {
+		if (!id) return 1;
+		conn = await pool.getConnection();
+		let locks = await conn.query(`SELECT * FROM locks WHERE keyholderId='${id}'`);
+		locks.forEach(async (lock) => {
+			lock = ensureReturn(lock);
+			lock.lockee = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.lockeeId}'`))[0];
+			lock.keyholder = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.keyholderId}'`))[0];
+		});
+		return locks;
+	} catch (e) {
+		console.error(e);
+		return 1;
+	} finally {
+		if (conn) await conn.close();
+	}
+}
+
+async function getLock(id, accessToken, lockeeId) {
 	let conn;
 	try {
 		conn = await pool.getConnection();
-		let lock = await conn.query(`SELECT * FROM locks WHERE id='${id}'`);
+		let lock = await conn.query(`SELECT * FROM locks WHERE id='${id}' OR lockeeId='${lockeeId}'`);
 		if (!lock[0]?.id) return null;
 		lock = ensureReturn(lock[0]);
 		lock.authorized = false;
@@ -79,12 +101,15 @@ async function getLock(id, accessToken) {
 
 			if (lock.keyholderId == session.userId) lock.authorized = true;
 		}
+		lock.lockee = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.lockeeId}'`))[0];
+		lock.keyholder = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.keyholderId}'`))[0];
+
 		return lock;
 	} catch (e) {
 		console.error(e);
 		return 1;
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -123,7 +148,7 @@ async function createUser(user) {
 	} catch (e) {
 		console.error(e);
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -138,7 +163,7 @@ async function getSession(token) {
 		console.error(e);
 		return 1;
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -238,6 +263,8 @@ module.exports = {
 	loginUser,
 	toggleLockTimer,
 	toggleFreeze,
+	getKhLocks,
+	getSession,
 };
 
 async function ensureUniqueId(id) {

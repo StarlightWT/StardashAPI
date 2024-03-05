@@ -1,8 +1,84 @@
 html
   head
-    title StarDash
+    title Dashboard
     link(rel='stylesheet', type='text/css', href='/css/main.css')
   body
     include modules/navbar.pug
+    if !role
+      #selectRole 
+        h1 Welcome to StarDash! 
+        h2 Please select your role: 
+        .buttons 
+          a keyholder 
+          a() lockee
+        h3 (You can change this at any time!)
     
+    if role=="lockee" || role=="switch"
+      #lockeeView
+        h1 Current lock
+        .timer__container 
+          h1 Time left
+
+          #timer 
+            .window
+              .digits#days
+              .title days
+            .window
+              .digits#hours 
+              .title hours
+            .window
+              .digits#minutes 
+              .title minutes
+            .window
+              .digits#seconds
+              .title seconds
+          script.
+            let lock = !{lock};
+            var timeRemaining = lock.endsAt - Date.now();
+            function updateTime(timeRemaining){
+              let times = !{timeCalc}(timeRemaining);
+            
+              let daysElement = document.getElementById("days"),
+                  hoursElement = document.getElementById("hours"),
+                  minutesElement = document.getElementById("minutes"),
+                  secondsElement = document.getElementById("seconds");
+            
+                  daysElement.innerHTML =    times.days    < 10 ? `0${times.days}`    : times.days;
+                  hoursElement.innerHTML =   times.hours   < 10 ? `0${times.hours}`   : times.hours;
+                  minutesElement.innerHTML = times.minutes < 10 ? `0${times.minutes}` : times.minutes;
+                  secondsElement.innerHTML = times.seconds < 10 ? `0${times.seconds}` : times.seconds;
+            }
+        
+            updateTime(timeRemaining);
+            timeRemaining -= 1000;
+        
+            setInterval(() => { 
+              updateTime(timeRemaining);
+              timeRemaining -= 1000;
+            },1000);
+        #actions
+          - lock = JSON.parse(lock)
+          - console.log(lock);
+            a.action add time
+            a.action unlock
+            a.action(href=`/locks/${lock.id}`) link
+
+
+    if role=="keyholder" || role=="switch"
+      #activeLocks 
+        h1 Active locks
+        ul#lockList
+          each lock in locks
+            -lock = JSON.parse(lock);
+            -var date = new Date(parseInt(lock.createdAt))
+            li
+              #timer 00:00:00:00
+              #actions 
+                i(class="fa-regular fa-clock")
+                i(class="fa-regular fa-snowflake")
+                i(class="fa-solid fa-up-right-from-square" onclick=`window.location = '/locks/${lock.id}'`)
+              #name= lock.lockee.username
+              #lockedSince Since: #{date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()}
+      
+
       

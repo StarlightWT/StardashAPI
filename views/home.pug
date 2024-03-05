@@ -11,8 +11,11 @@ html
         #buttons
           
           a(href="#features")#feat Features
-          a(href="/signup")#star Start your experience!
-      #right Dashboard Preview Image
+          if authorized
+            a(href="/dashboard")#star Start your experience!
+          else
+            a(href="/signup")#star Start your experience!
+      #right 
     ul#features
       li.feature
 
