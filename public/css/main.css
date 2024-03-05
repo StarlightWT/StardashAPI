@@ -341,6 +341,14 @@ body {
 
 #activeLocks > #lockList > li > #name {
 	position: absolute;
+	bottom: 1.3rem;
+	left: 0;
+	right: 0;
+	margin-inline: auto;
+}
+
+#activeLocks > #lockList > li > #lockedSince {
+	position: absolute;
 	bottom: 0.3rem;
 	left: 0;
 	right: 0;
