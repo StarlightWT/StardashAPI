@@ -36,6 +36,9 @@ setTimeout(() => {
 require("./mainHandler")(app);
 require("./viewHandler")(app);
 
+//Run updateHandler to make update code upon push to main branch
+require("./updateHandler")(app);
+
 app.all("*", (req, res) => {
 	res.status(400).render("error");
 });
