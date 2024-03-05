@@ -15,6 +15,7 @@ async function testConnection() {
 	let conn;
 	try {
 		conn = await pool.getConnection();
+
 		return 1;
 	} catch (e) {
 		console.error(e);

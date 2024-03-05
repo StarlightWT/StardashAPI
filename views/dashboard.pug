@@ -27,7 +27,7 @@ html
                 i(class="fa-regular fa-snowflake")
                 i(class="fa-solid fa-up-right-from-square")
               #name= lock.lockee.username
-              #lockedSince= date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() 
+              #lockedSince Since: #{date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()}
     if role=="lockee" || role=="switch"
 
       

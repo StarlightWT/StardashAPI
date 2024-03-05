@@ -301,7 +301,7 @@ body {
 
 #activeLocks > #lockList > li {
 	position: relative;
-	width: 30%;
+	width: 300px;
 	margin: 0.5rem;
 	height: 200px;
 	background-color: var(--sec-bg-color);
@@ -353,4 +353,5 @@ body {
 	left: 0;
 	right: 0;
 	margin-inline: auto;
+	font-size: 12px;
 }
