@@ -283,13 +283,18 @@ body {
 	box-shadow: 2px 2px var(--secondary-colour), -2px -2px var(--secondary-colour), 2px -2px var(--secondary-colour), -2px 2px var(--secondary-colour);
 }
 
-#activeLocks {
+#activeLocks,
+#lockeeView {
 	max-width: 1000px;
 	display: flex;
 	flex-direction: column;
 	text-align: center;
 	justify-content: center;
 	margin-inline: auto;
+}
+
+#lockeeView {
+	margin-bottom: 4rem;
 }
 
 #activeLocks > #lockList {

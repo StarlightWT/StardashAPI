@@ -13,6 +13,51 @@ html
           a() lockee
         h3 (You can change this at any time!)
     
+    if role=="lockee" || role=="switch"
+      #lockeeView
+        h1 Current lock
+        .timer__container 
+          h1 Time left
+
+          #timer 
+            .window
+              .digits#days
+              .title days
+            .window
+              .digits#hours 
+              .title hours
+            .window
+              .digits#minutes 
+              .title minutes
+            .window
+              .digits#seconds
+              .title seconds
+          script.
+            let lock = !{lock};
+            var timeRemaining = lock.endsAt - Date.now();
+            function updateTime(timeRemaining){
+              let times = !{timeCalc}(timeRemaining);
+            
+              let daysElement = document.getElementById("days"),
+                  hoursElement = document.getElementById("hours"),
+                  minutesElement = document.getElementById("minutes"),
+                  secondsElement = document.getElementById("seconds");
+            
+                  daysElement.innerHTML =    times.days    < 10 ? `0${times.days}`    : times.days;
+                  hoursElement.innerHTML =   times.hours   < 10 ? `0${times.hours}`   : times.hours;
+                  minutesElement.innerHTML = times.minutes < 10 ? `0${times.minutes}` : times.minutes;
+                  secondsElement.innerHTML = times.seconds < 10 ? `0${times.seconds}` : times.seconds;
+            }
+        
+            updateTime(timeRemaining);
+            timeRemaining -= 1000;
+        
+            setInterval(() => { 
+              updateTime(timeRemaining);
+              timeRemaining -= 1000;
+            },1000);
+        #actions
+          .action add time
     if role=="keyholder" || role=="switch"
       #activeLocks 
         h1 Active locks
@@ -28,6 +73,6 @@ html
                 i(class="fa-solid fa-up-right-from-square" onclick=`window.location = '/locks/${lock.id}'`)
               #name= lock.lockee.username
               #lockedSince Since: #{date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()}
-    if role=="lockee" || role=="switch"
+      
 
       
