@@ -9,5 +9,25 @@ html
             input(type="email" name="email" id="email" placeholder="Input your email")
             label(for="pass") Password
             input(type="password" name="pass" id="pass" placeholder="Input your password")
-            button(type="submit") Sign in
+            button(onclick="submit()") Sign in
             a(href="/signup") Don't have an account?
+        script.
+
+            function submit(){
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("pass").value;
+            
+                fetch("http://localhost:8080/v1/users/login", {
+                    method: "POST",
+                    headers: [['Content-Type', 'application/json']],
+                    body: JSON.stringify({
+                        username: email, 
+                        password: password, 
+                        email: email,
+                    }),
+                }).then((response)=>{
+                    return response.json();
+                }).then((data) => {
+                    if(data.accessToken) window.location = "/dashboard";
+                })
+            }

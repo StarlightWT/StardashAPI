@@ -12,13 +12,14 @@ module.exports = (req, res) => {
 		if (response == 1) return res.status(500).send({ message: "Fatal error occured!" });
 		if (response == 2) return res.status(403).send({ message: "Username taken!" });
 		if (response == 3) return res.status(403).send({ message: "Email taken!" });
-		console.log(response[0]);
+
 		let options = {
 			maxAge: 1000 * 60 * 60 * 24 * 30 * 2, // would expire after 60 days
 			httpOnly: true, // The cookie only accessible by the web server
 			signed: true, // Indicates if the cookie should be signed
 		};
 		res.cookie("token", response[0].accessToken, options);
+
 		return res.status(200).send(response[0]);
 	});
 };
