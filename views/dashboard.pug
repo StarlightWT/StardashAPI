@@ -57,7 +57,13 @@ html
               timeRemaining -= 1000;
             },1000);
         #actions
-          .action add time
+          - lock = JSON.parse(lock)
+          - console.log(lock);
+            a.action add time
+            a.action unlock
+            a.action(href=`/locks/${lock.id}`) link
+
+
     if role=="keyholder" || role=="switch"
       #activeLocks 
         h1 Active locks
