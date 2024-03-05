@@ -1,9 +1,7 @@
 const cookieParser = require("cookie-parser");
-const { getLock, getKhLocks, getSession } = require("./databaseHandler");
+const { getLock, getKhLocks, getSession, createUser } = require("./databaseHandler");
 
 module.exports = (app) => {
-	app.use(cookieParser(process.env.COOKIE_SECRET));
-
 	app.get("/locks/:id", (req, res) => {
 		const { id } = req.params;
 
@@ -28,13 +26,21 @@ module.exports = (app) => {
 	});
 
 	app.get("/login", (req, res) => {
-		let options = {
-			maxAge: 1000 * 60 * 60 * 24 * 30 * 2, // would expire after 60 days
-			httpOnly: true, // The cookie only accessible by the web server
-			signed: true, // Indicates if the cookie should be signed
-		};
-		res.cookie("token", "270224yldPbCd5UVx2EGQ5Lh3MILmuYAo1MbRF97kI5RopzFBZbEbClnoqm1l6ZpNW0xTpKCVj7u", options);
+		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
+		if (accessToken) return res.redirect("/dashboard");
 		return res.render("login");
+	});
+
+	app.get("/signup", (req, res) => {
+		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
+		if (accessToken) return res.redirect("/dashboard");
+
+		return res.render("signup");
+	});
+
+	app.get("/logout", (req, res) => {
+		res.clearCookie("token");
+		return res.redirect("/");
 	});
 
 	app.get("/dashboard", async (req, res) => {

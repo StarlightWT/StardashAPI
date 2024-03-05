@@ -27,7 +27,7 @@ body {
 	margin: 0;
 	font-size: 24px;
 }
-
+/* !TEMPORARY */
 #WIP {
 	position: absolute;
 	top: 0;
@@ -86,6 +86,7 @@ body {
 	border-radius: 0.5rem;
 	padding: 0.25rem 0.5rem;
 	transition-duration: 250ms;
+	text-decoration: none;
 }
 
 #actions > .action:hover {
@@ -379,4 +380,48 @@ body {
 	right: 0;
 	margin-inline: auto;
 	font-size: 12px;
+}
+
+.form {
+	margin-top: 20%;
+	max-width: 400px;
+	margin-inline: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.form > label {
+	font-weight: 600;
+	margin-left: 1rem;
+}
+
+.form > input {
+	all: unset;
+	background-color: #4a4a4a;
+	border-radius: 1rem;
+	padding: 0.5rem 1rem;
+	box-shadow: 5px 5px 7px black;
+	border: 2px solid var(--background-color);
+	margin-bottom: 0.75rem;
+}
+
+.form > button {
+	all: unset;
+	background-color: var(--sec-bg-color);
+	text-align: center;
+	padding-block: 0.5rem;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition-duration: 250ms;
+	margin-top: 0.5rem;
+}
+
+.form > button:hover {
+	transform: scale(1.05);
+}
+
+.form > a {
+	text-align: center;
+	margin-top: 0.5rem;
+	font-size: 14px;
 }

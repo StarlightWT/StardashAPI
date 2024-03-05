@@ -6,6 +6,7 @@ const ttl = 5;
 let requestCounter = 0;
 
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.API_PORT;
 
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 	}
 	next();
 });
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 setInterval(() => {
 	if (requestCounter > 0) requestCounter--;

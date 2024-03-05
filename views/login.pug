@@ -1,10 +1,13 @@
 html 
     head
-        title StarDash
+        title Sign in
     link(rel='stylesheet', type='text/css', href='/css/main.css')
     body 
-        script.
-            function setAccessToken(){
-                document.cookie = "token=270224yldPbCd5UVx2EGQ5Lh3MILmuYAo1MbRF97kI5RopzFBZbEbClnoqm1l6ZpNW0xTpKCVj7u";
-            }
-        btn(onclick="setAccessToken()") setAccesToken
+        include modules/navbar.pug
+        .form 
+            label(for="email") Email or username
+            input(type="email" name="email" id="email" placeholder="Input your email")
+            label(for="pass") Password
+            input(type="password" name="pass" id="pass" placeholder="Input your password")
+            button(type="submit") Sign in
+            a(href="/signup") Don't have an account?
