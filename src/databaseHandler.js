@@ -10,6 +10,13 @@ const pool = mariadb.createPool({
 	database: process.env.DB_NAME,
 });
 
+process.on("SIGINT", async function () {
+	if (conn) {
+		await conn.end();
+	}
+	process.exit();
+});
+
 async function testConnection() {
 	console.log(`I:[PR] DB IP=${process.env.DB_HOST}`);
 	let conn;
@@ -22,7 +29,7 @@ async function testConnection() {
 		return 0;
 	} finally {
 		if (conn) {
-			await conn.end();
+			await conn.close();
 		}
 	}
 }
@@ -38,7 +45,7 @@ async function getUser(id) {
 		console.error(e);
 		return 1;
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -63,7 +70,7 @@ async function loginUser(username, email, password) {
 	} catch (e) {
 		console.error(e);
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -86,7 +93,7 @@ async function getKhLocks(accessToken) {
 		console.error(e);
 		return 1;
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -111,7 +118,7 @@ async function getLock(id, accessToken) {
 		console.error(e);
 		return 1;
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -150,7 +157,7 @@ async function createUser(user) {
 	} catch (e) {
 		console.error(e);
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
@@ -165,7 +172,7 @@ async function getSession(token) {
 		console.error(e);
 		return 1;
 	} finally {
-		if (conn) await conn.end();
+		if (conn) await conn.close();
 	}
 }
 
