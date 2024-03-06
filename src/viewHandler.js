@@ -18,8 +18,11 @@ module.exports = (app) => {
 		});
 	});
 
-	app.get("/", (req, res) => {
+	app.get("/", async (req, res) => {
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
+		const userId = (await getSession(accessToken))?.userId;
+		if (accessToken && !userId) res.clearCookie("token");
+
 		return res.render("home", {
 			authorized: accessToken,
 		});
@@ -46,9 +49,10 @@ module.exports = (app) => {
 	app.get("/dashboard", async (req, res) => {
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
 		if (!accessToken) return res.redirect("/");
-
+		console.log(accessToken);
 		//Get user ID
-		const userId = (await getSession(accessToken)).userId;
+		const userId = (await getSession(accessToken))?.userId;
+		if (!userId) return res.redirect("/");
 
 		//Get KH data
 		let locks = await getKhLocks(userId);
