@@ -31,22 +31,6 @@ body {
 	margin: 0;
 	font-size: 24px;
 }
-/* !TEMPORARY */
-#WIP {
-	position: absolute;
-	top: 0;
-	width: 90%;
-	left: 0;
-	right: 0;
-	margin-inline: auto;
-	font-size: 20px;
-	background-color: red;
-	text-align: center;
-	font-weight: bold;
-	padding-block: 0.25rem;
-	border-bottom-left-radius: 1rem;
-	border-bottom-right-radius: 1rem;
-}
 
 #timer {
 	display: flex;
@@ -456,7 +440,7 @@ body {
 	height: 250px;
 	background-color: rgba(var(--secondary-rgb), 0.6);
 	margin-inline: 1rem;
-	margin-block: 0.25rem;
+	margin-block: 0.5rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: start;
