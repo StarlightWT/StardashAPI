@@ -3,20 +3,24 @@
 
 * {
 	font-family: "Open Sans";
-	color: white;
-	--secondary-colour: #7927fc;
-	--background-color: #161616;
-	--sec-bg-color: #292828;
+	color: #ffffff;
+	--primary: #7e47d7;
+	--primary-rgb: 126, 71, 215;
+	--background: #171717;
+	--secondary: #2c2c2c;
+	--secondary-rgb: 44, 44, 44;
+	--accent: #ad49bc;
 }
 
 body {
-	background-color: var(--background-color);
+	margin: 5px;
+	background-color: var(--background);
 }
 
 .timer__container {
 	max-width: max-content;
 	margin: auto;
-	background-color: var(--sec-bg-color);
+	background-color: var(--secondary);
 	padding-block: 0.5rem;
 	padding-inline: 1rem;
 	border-radius: 0.5rem;
@@ -62,14 +66,14 @@ body {
 	justify-content: center;
 	align-items: center;
 	font-size: 1.5rem;
-	border: 5px solid var(--sec-bg-color);
+	border: 5px solid var(--secondary);
 	border-radius: 1.25rem;
 }
 
 #actions {
 	margin-top: 1rem;
 	padding: 0.5rem 1rem;
-	background-color: var(--sec-bg-color);
+	background-color: var(--secondary);
 	max-width: max-content;
 	margin-inline: auto;
 	display: flex;
@@ -82,7 +86,7 @@ body {
 	margin-inline: 0.5rem;
 	background-color: #4a4a4a;
 	text-align: center;
-	border: 3px solid var(--sec-bg-color);
+	border: 3px solid var(--secondary);
 	border-radius: 0.5rem;
 	padding: 0.25rem 0.5rem;
 	transition-duration: 250ms;
@@ -113,12 +117,16 @@ body {
 	margin-top: 0.5rem;
 	padding: 0.5rem 1.5rem;
 	border-radius: 1rem;
-	background-color: var(--secondary-colour);
+	background-color: var(--primary);
 	transition-duration: 250ms;
 }
 
 #error404 > #return:hover {
 	transform: scale(1.05);
+}
+
+.navBarContainer {
+	border-bottom: rgb(61, 61, 61) 1px solid;
 }
 
 #navBar {
@@ -137,18 +145,16 @@ body {
 #navBar > #list > li {
 	width: 100px;
 	padding-block: 0.75rem;
-	background-color: var(--sec-bg-color);
+	background-color: var(--secondary);
 	text-align: center;
 	margin-inline: 0.25rem;
-	border: 2px solid var(--background-color);
-	border-radius: 0.5rem;
+	border-radius: 0.25rem;
 	transition-duration: 250ms;
 }
 
 #navBar > #list > li:hover {
 	cursor: pointer;
-	transform: scale(1.05);
-	border-color: #fff;
+	transform: translateY(-5px);
 }
 
 #navBar > #list > li > a {
@@ -182,7 +188,7 @@ body {
 	display: flex;
 	margin-inline: auto;
 	margin-top: 2rem;
-	box-shadow: 7px 7px 10px black;
+	/* box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.281); */
 	border-radius: 1rem;
 	overflow: hidden;
 }
@@ -194,13 +200,21 @@ body {
 	width: 50%;
 	height: 400px;
 	padding: 1rem;
-	background-color: var(--sec-bg-color);
+	/* background-color: var(--secondary); */
 }
 
 #welcome > #left > h1 {
 	margin: 0;
 	margin-top: 2rem;
 	margin-left: 1rem;
+	font-size: 3rem;
+	background-clip: inherit;
+	background-color: #f3ec78;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	-moz-background-clip: text;
+	-moz-text-fill-color: transparent;
+	background-image: linear-gradient(to right, var(--primary), var(--accent));
 }
 
 #welcome > #left > h2 {
@@ -224,16 +238,19 @@ body {
 #welcome > #left > #buttons > a:hover {
 	transform: scale(1.1);
 }
+#welcome > #left > #buttons > a:last-child:hover {
+	box-shadow: 0px 0px 20px var(--primary);
+}
 
 #welcome > #left > #buttons > #star {
 	right: 2rem;
 	bottom: 2.5rem;
-	background-color: var(--secondary-colour);
+	background-image: linear-gradient(to bottom right, var(--primary) 30%, var(--accent));
 }
 #welcome > #left > #buttons > #feat {
 	right: 19rem;
 	bottom: 2.5rem;
-	background-color: var(--background-color);
+	background-color: var(--secondary);
 }
 
 #welcome > #right {
@@ -285,7 +302,7 @@ body {
 }
 
 #selectRole > .buttons > a {
-	background-color: var(--sec-bg-color);
+	background-color: var(--secondary);
 	margin-inline: 1rem;
 	width: 200px;
 	padding-block: 1.25rem;
@@ -298,7 +315,7 @@ body {
 #selectRole > .buttons > a:hover {
 	cursor: pointer;
 	transform: scale(1.1);
-	box-shadow: 2px 2px var(--secondary-colour), -2px -2px var(--secondary-colour), 2px -2px var(--secondary-colour), -2px 2px var(--secondary-colour);
+	box-shadow: 2px 2px var(--primary), -2px -2px var(--primary), 2px -2px var(--primary), -2px 2px var(--primary);
 }
 
 #activeLocks,
@@ -327,17 +344,17 @@ body {
 	width: 300px;
 	margin: 0.5rem;
 	height: 200px;
-	background-color: var(--sec-bg-color);
+	background-color: var(--secondary);
 	display: flex;
 	flex-direction: column;
-	border: 2px solid var(--sec-bg-color);
+	border: 2px solid var(--secondary);
 	border-radius: 0.5rem;
 }
 
 #activeLocks > #lockList > li > #timer {
 	width: 100%;
 	text-align: center;
-	background-color: var(--background-color);
+	background-color: var(--background);
 	height: 25%;
 	justify-content: center;
 	border-top-left-radius: 0.5rem;
@@ -354,7 +371,7 @@ body {
 }
 
 #activeLocks > #lockList > li > #actions > i:hover {
-	color: var(--secondary-colour);
+	color: var(--primary);
 	cursor: pointer;
 }
 
@@ -401,13 +418,13 @@ body {
 	border-radius: 1rem;
 	padding: 0.5rem 1rem;
 	box-shadow: 5px 5px 7px black;
-	border: 2px solid var(--background-color);
+	border: 2px solid var(--background);
 	margin-bottom: 0.75rem;
 }
 
 .form > button {
 	all: unset;
-	background-color: var(--sec-bg-color);
+	background-color: var(--secondary);
 	text-align: center;
 	padding-block: 0.5rem;
 	border-radius: 0.5rem;
@@ -424,4 +441,59 @@ body {
 	text-align: center;
 	margin-top: 0.5rem;
 	font-size: 14px;
+}
+
+#features {
+	margin-block: 0;
+	margin-top: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	width: fit-content;
+}
+
+#features > .feature {
+	width: 200px;
+	height: 250px;
+	background-color: rgba(var(--secondary-rgb), 0.6);
+	margin-inline: 1rem;
+	margin-block: 0.25rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	align-items: center;
+	padding: 0.25rem;
+	border-radius: 2rem;
+	text-align: center;
+}
+
+#features > .feature > h3 {
+	margin: 0;
+	margin-top: 0.5rem;
+	font-weight: 500;
+}
+
+#features > .feature > h4 {
+	font-weight: 400;
+	padding-inline: 1rem;
+}
+
+#features > .feature > i {
+	font-size: 25px;
+	margin-top: 2.5rem;
+}
+
+#featuresTitle {
+	text-align: center;
+	margin: 0;
+	margin-top: 5rem;
+	font-size: 32px;
+}
+
+#features > .feature:last-child {
+	justify-content: center;
+	align-items: center;
+}
+
+#features > .feature:last-child > i {
+	margin: 0;
 }
