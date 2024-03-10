@@ -1,21 +1,22 @@
 //- #WIP This page is under construction!
-nav#navBar 
-    a#title(href="/")
-        #logo
-        h1 StarDash 
-    ul#list        
-        if(!authorized)
-            li(onclick="window.location='/login'")
-                a Sign in
-            li(onclick="window.location='/signup'")
-                a Sign up
-        if(authorized)
-            li(onclick="window.location='/dashboard'")
-                a Dashboard
-            li(onclick="window.location='/activity'")
-                a Activity
-            li(onclick="window.location='/discord'")
-                a Discord
-        li(onclick="window.location='/premium'")
-            a Premium
-        
+.navBarContainer 
+    nav#navBar 
+        a#title(href="/")
+            #logo
+            h1 StarDash 
+        ul#list        
+            if(!authorized)
+                li(onclick="window.location='/login'")
+                    a Sign in
+                li(onclick="window.location='/signup'")
+                    a Sign up
+            if(authorized)
+                li(onclick="window.location='/dashboard'")
+                    a Dashboard
+                li(onclick="window.location='/activity'")
+                    a Activity
+                li(onclick="window.location='/discord'")
+                    a Discord
+            li(onclick="window.location='/premium'")
+                a Premium
+            
