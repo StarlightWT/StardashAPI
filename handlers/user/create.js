@@ -1,8 +1,13 @@
 const { createUser } = require("../../src/databaseHandler");
 
 module.exports = (req, res) => {
-	const { username, password, email } = req.body;
+	let { username, password, email } = req.body;
 	if (!username || !password || !email) return res.status(400).send({ message: "Missing/Incorrect data!" });
+
+	username = username.toLowerCase();
+	email = email.toLowerCase();
+
+	if (!email.includes("@") || !email.includes(".")) return res.status(400).send({ message: "Invalid email!" });
 
 	createUser({
 		username: username,
