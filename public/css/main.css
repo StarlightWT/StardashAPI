@@ -552,10 +552,11 @@ body {
 
 .footer {
 	border-top: rgb(61, 61, 61) 1px solid;
-	margin-block: 2rem;
+	margin-block: 3rem;
 }
 
 .footer > div {
+	margin-top: 1rem;
 	max-width: 1000px;
 	margin-inline: auto;
 	display: flex;
