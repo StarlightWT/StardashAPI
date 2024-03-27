@@ -22,8 +22,8 @@ html
                 const error = document.getElementById("error");
                 const email = document.getElementById("email").value;
                 const password = document.getElementById("pass").value;
-
-                fetch("http://localhost:8080/v1/users/login", {
+            
+                fetch("https://stardash.app/v1/users/login", {
                     method: "POST",
                     headers: [['Content-Type', 'application/json']],
                     body: JSON.stringify({

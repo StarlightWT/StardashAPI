@@ -1,0 +1,91 @@
+html
+  head
+    title Create lock
+    link(rel='stylesheet', type='text/css', href='/css/main.css')
+  body
+    script. 
+          function toggle(element){
+            const text = (element.parentElement).children[1];
+            if(text.innerHTML == "disabled"){
+              text.innerHTML = "enabled";
+            } 
+            else {
+              text.innerHTML ="disabled"
+            }
+          }
+    include modules/navbar.pug
+    .section__container
+      h1 Starting duration
+    .timers
+      .timer__container 
+        h1 Minimum starting time
+
+        #timer 
+          .window
+            .digits#days 00
+            .title days
+          .window
+            .digits#hours 00
+            .title hours
+          .window
+            .digits#minutes 00
+            .title minutes
+          .window
+            .digits#seconds 00
+            .title seconds
+      .timer__container 
+        h1 Maximum starting time
+
+        #timer 
+          .window
+            .digits#days 00
+            .title days
+          .window
+            .digits#hours 00
+            .title hours
+          .window
+            .digits#minutes 00
+            .title minutes
+          .window
+            .digits#seconds 00
+            .title seconds
+    .section__container
+      h1 Limiting times
+      .toggle 
+        
+        input#limit_times(type="checkbox", name="limit_times", onclick="toggle(this)")
+        h3#status disabled
+        
+    .timers
+      .timer__container 
+        h1 Minimum locked time
+
+        #timer 
+          .window
+            .digits#days 00
+            .title days
+          .window
+            .digits#hours 00
+            .title hours
+          .window
+            .digits#minutes 00
+            .title minutes
+          .window
+            .digits#seconds 00
+            .title seconds
+      .timer__container 
+        h1 Maximum locked time
+
+        #timer 
+          .window
+            .digits#days 00
+            .title days
+          .window
+            .digits#hours 00
+            .title hours
+          .window
+            .digits#minutes 00
+            .title minutes
+          .window
+            .digits#seconds 00
+            .title seconds

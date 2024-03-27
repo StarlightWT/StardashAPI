@@ -17,7 +17,11 @@ html
       if lock == "null"
         #lockeeView
           h1 Current lock
-          h2 No active lock!
+          h2 There is currently no active lock
+          div  
+            a(href="/locks/create") Create a new lock
+            div or
+            a(href="/locks/public") Join a lock  
       if lock != "null"
         #lockeeView
           h1 Current lock

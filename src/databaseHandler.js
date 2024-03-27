@@ -31,7 +31,7 @@ async function getUser(id) {
 	let conn;
 	try {
 		conn = await pool.getConnection();
-		let user = await conn.query(`SELECT id, username, email FROM users WHERE id='${id}'`);
+		let user = await conn.query("SELECT id, username, email FROM users WHERE id=?", [id]);
 		if (!user[0]?.id) return null;
 		return user[0];
 	} catch (e) {
@@ -48,7 +48,7 @@ async function loginUser(username, email, password) {
 	let conn;
 	try {
 		conn = await pool.getConnection();
-		let userQuery = await conn.query(`SELECT id, passHash FROM users WHERE username='${username}' OR email='${email}'`);
+		let userQuery = await conn.query("SELECT id, passHash FROM users WHERE username=? OR email=?", [username, email]);
 		const user = userQuery[0];
 
 		if (!user) return 1;
@@ -73,7 +73,7 @@ async function getKhLocks(id) {
 	try {
 		if (!id) return 1;
 		conn = await pool.getConnection();
-		let locks = await conn.query(`SELECT * FROM locks WHERE keyholderId='${id}'`);
+		let locks = await conn.query("SELECT * FROM locks WHERE keyholderId=?", [id]);
 		locks.forEach(async (lock) => {
 			lock = ensureReturn(lock);
 			lock.lockee = (await conn.query(`SELECT id, username, isPremium, isMod FROM users WHERE id='${lock.lockeeId}'`))[0];
@@ -92,7 +92,7 @@ async function getLock(id, accessToken, lockeeId) {
 	let conn;
 	try {
 		conn = await pool.getConnection();
-		let lock = await conn.query(`SELECT * FROM locks WHERE id='${id}' OR lockeeId='${lockeeId}'`);
+		let lock = await conn.query("SELECT * FROM locks WHERE id=? OR lockeeId=?", [id, lockeeId]);
 		if (!lock[0]?.id) return null;
 		lock = ensureReturn(lock[0]);
 		lock.authorized = false;
@@ -127,18 +127,18 @@ async function createUser(user) {
 		conn = await pool.getConnection();
 
 		// Check if someone already has the username
-		const usernameCheck = await conn.query(`SELECT * FROM users WHERE username='${user.username}'`);
+		const usernameCheck = await conn.query("SELECT * FROM users WHERE username=?", [user.username]);
 		if (usernameCheck[0]?.id) return 2;
 
 		// Check if someone already used the email
-		const emailCheck = await conn.query(`SELECT * FROM users WHERE email='${user.email}'`);
+		const emailCheck = await conn.query("SELECT * FROM users WHERE email=?", [user.email]);
 		if (emailCheck[0]?.id) return 3;
 
 		let id = await ensureUniqueId(timedStringGen(40));
 		let passHash = await argon2.hash(user.password, { hashLength: 32 });
 
 		// Add user to database
-		await conn.query(`INSERT INTO users ( id, username, email, passHash ) VALUES ('${id}', '${user.username}', '${user.email}', '${passHash}')`);
+		await conn.query(`INSERT INTO users ( id, username, email, passHash ) VALUES (?, ?, ?,?)`, [id, user.username, user.email, passHash]);
 
 		// Create user accessToken
 		let accessToken = await ensureUniqueAccessToken(timedStringGen(70));
@@ -156,7 +156,7 @@ async function getSession(token) {
 	let conn;
 	try {
 		conn = await pool.getConnection();
-		let session = await conn.query(`SELECT * FROM accessTokens WHERE accessToken='${token}'`);
+		let session = await conn.query(`SELECT * FROM accessTokens WHERE accessToken=?`, [token]);
 		if (!session[0]?.accessToken) return null;
 		return session[0];
 	} catch (e) {
@@ -190,11 +190,12 @@ async function startLock(lock, accessToken) {
 
 		let timerVisible = lock.timerVisible ?? true;
 		let mustEndAt = lock.mustEndAt ?? null;
+		let cantEndBefore = lock.cantEndBefore ?? null;
 
 		let status = "locked";
 
 		conn = await pool.getConnection();
-		let response = await conn.query(`INSERT INTO locks (id, createdAt, endsAt, mustEndAt, timerVisible, status, lockeeId) VALUES ('${id}', ${createdAt}, ${endsAt}, ${mustEndAt}, ${timerVisible}, '${status}', '${lockeeId}') RETURNING *`);
+		let response = await conn.query(`INSERT INTO locks VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING *`, [id, createdAt, endsAt, mustEndAt, timerVisible, status, lockeeId, cantEndBefore]);
 
 		response = ensureReturn(response[0]);
 
@@ -219,7 +220,7 @@ async function toggleLockTimer(lockId, newState, accessToken) {
 
 		conn = await pool.getConnection();
 
-		await conn.query(`UPDATE locks SET timerVisible = ${newState} WHERE id = '${lockId}'`);
+		await conn.query(`UPDATE locks SET timerVisible = ${newState} WHERE id=?`, [lockId]);
 
 		return await getLock(lockId);
 	} catch (e) {
@@ -245,7 +246,7 @@ async function toggleFreeze(lockId, newState, accessToken) {
 		if (newState == "true") newState = new Date(Date.now()).getTime();
 		else newState = null;
 
-		await conn.query(`UPDATE locks SET frozenAt=${newState} WHERE id='${lockId}'`);
+		await conn.query(`UPDATE locks SET frozenAt=${newState} WHERE id=?`, [lockId]);
 		return await getLock(lockId);
 	} catch (e) {
 		console.error(e);
