@@ -5,21 +5,27 @@ html
     body 
         include modules/navbar.pug
         .form 
+            h3#error 
             label(for="username") Username 
-            input(type="text" name="username" id="username" placeholder="Input your username")
+            input(type="text" name="username" id="username" placeholder="Input your username" onchange="clearError()")
             label(for="email") Email 
-            input(type="email" name="email" id="email" placeholder="Input your email")
+            input(type="email" name="email" id="email" placeholder="Input your email" onchange="clearError()")
             label(for="pass") Password
-            input(type="password" name="pass" id="pass" placeholder="Input your password")
+            input(type="password" name="pass" id="pass" placeholder="Input your password" onchange="clearError()")
             button(onclick="submit()") Sign up
             a(href="/login") Already have an account?
         script.
+            function clearError(){
+                const error = document.getElementById("error");
+                error.textContent="";
+            }
+
             function submit(){
                 const username = document.getElementById("username").value;
                 const email = document.getElementById("email").value;
                 const password = document.getElementById("pass").value;
             
-                fetch("https://stardash.app/v1/users/create", {
+                fetch("https://stardash.net/v1/users/create", {
                     method: "POST",
                     headers: [['Content-Type', 'application/json']],
                     body: JSON.stringify({
@@ -30,6 +36,7 @@ html
                 }).then((response)=>{
                     return response.json();
                 }).then((data) => {
-                    window.location = "/dashboard";
-                })
+                    if(data.accessToken) window.location = "/dashboard";
+                    error.textContent = data.message;
+                    })
             }

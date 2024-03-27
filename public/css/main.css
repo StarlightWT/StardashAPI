@@ -461,7 +461,9 @@ body {
 	margin-top: 1rem;
 	display: flex;
 	flex-wrap: wrap;
-	width: fit-content;
+	justify-content: center;
+	width: max-content;
+	max-width: min(1000px, 90vw);
 }
 
 #features > .feature {
@@ -561,4 +563,106 @@ body {
 
 .timers > .timer__container {
 	margin-inline: 0.5rem;
+}
+
+#error {
+	color: red;
+	text-align: center;
+	font-size: 18px;
+	height: 20px;
+}
+
+.main__card {
+	position: relative;
+	background-color: rgba(var(--secondary-rgb), 0.6);
+	margin-top: 3rem;
+	border-radius: 0.5rem;
+	max-width: calc(1000px - 3rem);
+	margin-inline: auto;
+	padding: 1rem;
+}
+
+.main__card h1 {
+	margin: 0;
+	margin-inline: 0.5rem;
+}
+
+.main__card p {
+	min-height: 3rem;
+	margin-inline: 0.5rem;
+}
+
+.main__card span {
+	font-weight: 600;
+}
+
+.main__card h2 {
+	font-size: 10px;
+	position: absolute;
+	left: 1.5rem;
+}
+
+.main__card div {
+	display: flex;
+	justify-content: right;
+}
+
+.main__card a {
+	all: unset;
+	padding: 0.5rem 1.5rem;
+	margin-inline: 0.5rem;
+	width: fit-content;
+	font-size: 20px;
+	font-weight: 500;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition-duration: 250ms;
+	background-color: var(--background);
+}
+
+.main__card a:hover {
+	transform: scale(1.1);
+}
+
+.main__card a:last-child {
+	background-color: var(--primary);
+}
+.main__card a:last-child:hover {
+	box-shadow: 0px 0px 20px var(--primary);
+}
+
+.footer {
+	border-top: rgb(61, 61, 61) 1px solid;
+	margin-block: 3rem;
+}
+
+.footer > div {
+	margin-top: 1rem;
+	max-width: 1000px;
+	margin-inline: auto;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.footer > div > ul {
+	padding: 0;
+	list-style: none;
+	text-align: center;
+}
+
+.footer > div > ul > li > a {
+	text-decoration: none;
+}
+
+.footer > div > ul > li:first-child {
+	font-weight: 700;
+	font-size: 20px;
+}
+
+.footer > h1 {
+	max-width: 1000px;
+	margin-inline: auto;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: center;
 }
