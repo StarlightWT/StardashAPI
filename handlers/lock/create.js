@@ -19,6 +19,7 @@ module.exports = (req, res) => {
 	if (!maxDuration) return res.status(400).send({ message: "Missing maxDuration!" });
 
 	startLock(req.body, authToken).then((response) => {
+		if (response == 3) return res.status(404).send({ message: "Invalid authentication token!" });
 		res.status(200).send(response);
 	});
 };

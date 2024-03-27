@@ -2,7 +2,7 @@ const cookieParser = require("cookie-parser");
 const { getLock, getKhLocks, getSession, createUser } = require("./databaseHandler");
 
 module.exports = (app) => {
-	app.get("/locks/:id", (req, res) => {
+	app.get("/locks/lock/:id", (req, res) => {
 		const { id } = req.params;
 
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
@@ -15,6 +15,15 @@ module.exports = (app) => {
 				timeCalc: getTime,
 				authorized: data.authorized,
 			});
+		});
+	});
+
+	app.get("/locks/create", (req, res) => {
+		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
+		if (!accessToken) return res.redirect("/");
+
+		return res.render("create_lock", {
+			authorized: true,
 		});
 	});
 
@@ -53,7 +62,6 @@ module.exports = (app) => {
 	app.get("/dashboard", async (req, res) => {
 		const accessToken = cookieParser.signedCookie(req.signedCookies.token, process.env.COOKIE_SECRET) ?? null;
 		if (!accessToken) return res.redirect("/");
-		console.log(accessToken);
 		//Get user ID
 		const userId = (await getSession(accessToken))?.userId;
 		if (!userId) return res.redirect("/");
